@@ -14,13 +14,13 @@ namespace Template_P3
     {
         // member variables
         public Surface screen;                  // background surface for printing etc.
-        Mesh mesh, floor;                       // a mesh to draw using OpenGL
+        Mesh mesh, floor, eendM;                       // a mesh to draw using OpenGL
         const float PI = 3.1415926535f;         // PI
         float a = 0;                            // teapot rotation angle
         Stopwatch timer;                        // timer for measuring frame duration
         Shader shader;                          // shader to use for rendering
         Shader postproc;                        // shader to use for post processing
-        Texture wood;                           // texture to use for rendering
+        Texture wood, eend;                           // texture to use for rendering
         RenderTarget target;                    // intermediate render target
         ScreenQuad quad;                        // screen filling quad for post processing
         bool useRenderTarget = true;
@@ -32,19 +32,27 @@ namespace Template_P3
         {
             // load a texture
             wood = new Texture("../../assets/wood.jpg");
+            eend = new Texture("../../assets/fur.jpg");
+
 
             //load transform
             Matrix4 transform = Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), a);
             transform *= Matrix4.CreateTranslation(0, -4, -15);
             transform *= Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 1000);
 
+            Matrix4 transformEend = Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), a);
+            transformEend *= Matrix4.CreateTranslation(0, 0, -9);
+            transformEend *= Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 1000);
+
             // load teapot
             mesh = new Mesh("../../assets/teapot.obj", wood, transform);
             floor = new Mesh("../../assets/floor.obj", wood, transform);
+            eendM = new Mesh("../../assets/4Voet.obj", eend, transformEend);
 
             //fill the scenegraph
             graph.master = new Node(floor);
-            graph.Add(mesh);           
+            //graph.Add(mesh);         
+            graph.Add(eendM);  
 
             // initialize stopwatch
             timer = new Stopwatch();
