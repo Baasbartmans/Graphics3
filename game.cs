@@ -2,6 +2,7 @@
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
+using template_P3;
 
 // minimal OpenTK rendering framework for UU/INFOGR
 // Jacco Bikker, 2016
@@ -13,23 +14,46 @@ namespace Template_P3
     {
         // member variables
         public Surface screen;                  // background surface for printing etc.
-        Mesh mesh, floor;                       // a mesh to draw using OpenGL
+        Mesh mesh, floor, eendM;                       // a mesh to draw using OpenGL
         const float PI = 3.1415926535f;         // PI
         float a = 0;                            // teapot rotation angle
         Stopwatch timer;                        // timer for measuring frame duration
         Shader shader;                          // shader to use for rendering
         Shader postproc;                        // shader to use for post processing
-        Texture wood;                           // texture to use for rendering
+        Texture wood, eend;                           // texture to use for rendering
         RenderTarget target;                    // intermediate render target
         ScreenQuad quad;                        // screen filling quad for post processing
         bool useRenderTarget = true;
 
+        SceneGraph graph = new SceneGraph();    // add the scenegraph which will contain all objects
+
         // initialize
         public void Init()
         {
+            // load a texture
+            wood = new Texture("../../assets/wood.jpg");
+            eend = new Texture("../../assets/fur.jpg");
+
+
+            //load transform
+            Matrix4 transform = Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), a);
+            transform *= Matrix4.CreateTranslation(0, -4, -15);
+            transform *= Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 1000);
+
+            Matrix4 transformEend = Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), a);
+            transformEend *= Matrix4.CreateTranslation(0, 0, -9);
+            transformEend *= Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 1000);
+
             // load teapot
-            mesh = new Mesh("../../assets/teapot.obj");
-            floor = new Mesh("../../assets/floor.obj");
+            mesh = new Mesh("../../assets/teapot.obj", wood, transform);
+            floor = new Mesh("../../assets/floor.obj", wood, transform);
+            eendM = new Mesh("../../assets/4Voet.obj", eend, transformEend);
+
+            //fill the scenegraph
+            graph.master = new Node(floor);
+            //graph.Add(mesh);         
+            graph.Add(eendM);  
+
             // initialize stopwatch
             timer = new Stopwatch();
             timer.Reset();
@@ -37,13 +61,7 @@ namespace Template_P3
             // create shaders
             shader = new Shader("../../shaders/vs.glsl", "../../shaders/fs.glsl");
             postproc = new Shader("../../shaders/vs_post.glsl", "../../shaders/fs_post.glsl");
-
-            //passsing uniform variable to shader:
-            Vector4 ambience = new Vector4(0.1f, 0.1f, 0.1f, 0.1f);
-            GL.Uniform4(GL.GetUniformLocation(shader.programID, "ambientColor"), ambience);
-
-            // load a texture
-            wood = new Texture("../../assets/wood.jpg");
+           
             // create the render target
             target = new RenderTarget(screen.width, screen.height);
             quad = new ScreenQuad();
@@ -79,8 +97,11 @@ namespace Template_P3
                 target.Bind();
 
                 // render scene to render target
-                mesh.Render(shader, transform, wood);
-                floor.Render(shader, transform, wood);
+                //mesh.Render(shader, transform, wood);
+                //floor.Render(shader, transform, wood);
+
+                //render the scenegraph
+                graph.Render(shader);
 
                 // render quad
                 target.Unbind();

@@ -12,5 +12,5 @@ out vec4 outputColor;
 // fragment shader
 void main()
 {
-    outputColor = (0.1, 0.1, 0.1, 0.1) + texture( pixels, uv ) + 0.5f * vec4( normal.xyz, 1 );
+    outputColor = texture( pixels, uv );// + 0.5f * vec4( normal.xyz, 1 );
 }
