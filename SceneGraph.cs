@@ -29,7 +29,7 @@ namespace template_P3
     {
         public List<Node> children = new List<Node>();
         Matrix4 parentTransform = Matrix4.CreateTranslation(new Vector3(0,0,0));
-        Matrix4 thisTransform = new Matrix4();
+        public Matrix4 thisTransform = Matrix4.CreateTranslation(new Vector3(0,0,0));
         Mesh mesh;
 
         public Node(Mesh mesh)
@@ -58,7 +58,7 @@ namespace template_P3
                 n.Render(shader, camPos);
             }
             if(mesh != null)
-            mesh.Render(shader,camPos * thisTransform, mesh.texture);
+            mesh.Render(shader, camPos * thisTransform, mesh.texture);
         }
 
 
