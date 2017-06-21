@@ -3,6 +3,7 @@ using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 using template_P3;
+using OpenTK.Input;
 
 // minimal OpenTK rendering framework for UU/INFOGR
 // Jacco Bikker, 2016
@@ -26,6 +27,7 @@ namespace Template_P3
         bool useRenderTarget = true;
 
         SceneGraph graph = new SceneGraph();    // add the scenegraph which will contain all objects
+        Camera cam = new Camera();
 
         // initialize
         public void Init()
@@ -72,6 +74,8 @@ namespace Template_P3
         {
             screen.Clear(0);
             screen.Print("hello world", 2, 2, 0xffff00);
+
+            if (Keyboard.GetState().IsKeyDown(Key.A)) ;
         }
 
         // tick for OpenGL rendering code
