@@ -43,7 +43,7 @@ namespace Template_P3
         {
             // load a texture
             wood = new Texture("../../assets/wood.jpg");
-            eend = new Texture("../../assets/fur.jpg");
+            eend = new Texture("../../assets/eend texture (1).jpg");
 
 
             //load transform
