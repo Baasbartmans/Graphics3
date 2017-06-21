@@ -27,7 +27,8 @@ namespace Template_P3
         bool useRenderTarget = true;
 
         SceneGraph graph = new SceneGraph();    // add the scenegraph which will contain all objects
-        Camera cam = new Camera();
+        Camera cam = new Camera(new Vector3(0,0,0));
+        float moveSpeed = 0.5f;
 
         // initialize
         public void Init()
@@ -52,9 +53,10 @@ namespace Template_P3
             eendM = new Mesh("../../assets/4Voet.obj", eend, transformEend);
 
             //fill the scenegraph
-            graph.master = new Node(floor);
+            //graph.master = new Node(floor);
             //graph.Add(mesh);         
-            graph.Add(eendM);  
+            graph.Add(eendM);
+            graph.Add(floor);
 
             // initialize stopwatch
             timer = new Stopwatch();
@@ -75,7 +77,10 @@ namespace Template_P3
             screen.Clear(0);
             screen.Print("hello world", 2, 2, 0xffff00);
 
-            if (Keyboard.GetState().IsKeyDown(Key.A)) ;
+            if (Keyboard.GetState().IsKeyDown(Key.A)) cam.camPos *= Matrix4.CreateTranslation(new Vector3(moveSpeed, 0, 0));
+            if (Keyboard.GetState().IsKeyDown(Key.D)) cam.camPos *= Matrix4.CreateTranslation(new Vector3(-1 *moveSpeed, 0, 0));
+            if (Keyboard.GetState().IsKeyDown(Key.W)) cam.camPos *= Matrix4.CreateTranslation(new Vector3(0, 0, moveSpeed));
+            if (Keyboard.GetState().IsKeyDown(Key.S)) cam.camPos *= Matrix4.CreateTranslation(new Vector3(0, 0, moveSpeed * -1));
         }
 
         // tick for OpenGL rendering code
@@ -105,7 +110,7 @@ namespace Template_P3
                 //floor.Render(shader, transform, wood);
 
                 //render the scenegraph
-                graph.Render(shader);
+                graph.Render(shader, cam.camPos);
 
                 // render quad
                 target.Unbind();

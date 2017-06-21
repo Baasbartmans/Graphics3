@@ -11,11 +11,11 @@ namespace template_P3
 {
     class SceneGraph
     {
-        public Node master;
+        public Node master = new Node(null);
 
-        public void Render(Shader shader)
+        public void Render(Shader shader, Matrix4 camPos)
         {
-            master.Render(shader);
+            master.Render(shader, camPos);
         }
 
         public void Add(Mesh m)
@@ -28,14 +28,21 @@ namespace template_P3
     class Node
     {
         public List<Node> children = new List<Node>();
-        Matrix4 parentTransform = new Matrix4();
+        Matrix4 parentTransform = Matrix4.CreateTranslation(new Vector3(0,0,0));
         Matrix4 thisTransform = new Matrix4();
         Mesh mesh;
 
         public Node(Mesh mesh)
         {
-            thisTransform = parentTransform + mesh.transform;
-            this.mesh = mesh;
+            if (mesh != null)
+            {
+                thisTransform = parentTransform * mesh.transform;
+                this.mesh = mesh;
+            }
+            else
+            {
+                thisTransform = Matrix4.CreateTranslation(new Vector3(0, 0, 0));
+            }
         }
 
         public void Add(Node child)
@@ -44,13 +51,14 @@ namespace template_P3
             children.Add(child);
         }
 
-        public void Render(Shader shader)
+        public void Render(Shader shader, Matrix4 camPos)
         {
             foreach (Node n in children)
             {
-                n.Render(shader);
+                n.Render(shader, camPos);
             }
-            mesh.Render(shader, thisTransform, mesh.texture);
+            if(mesh != null)
+            mesh.Render(shader,camPos * thisTransform, mesh.texture);
         }
 
 
