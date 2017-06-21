@@ -47,13 +47,13 @@ namespace Template_P3
 
 
             //load transform
-            Matrix4 transform = Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), a);
-            transform *= Matrix4.CreateTranslation(0, -4, -15);
-            transform *= Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 1000);
+            Matrix4 transform = Matrix4.CreateTranslation(new Vector3(0, 9, -8));//Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), a);
 
-            Matrix4 transformEend = Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), a);
-            transformEend *= Matrix4.CreateTranslation(0, 0, -9);
-            transformEend *= Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 1000);
+            Matrix4 transformEend = Matrix4.CreateTranslation(new Vector3(0, 11.2f, -8));//Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), a);
+
+
+            //Matrix4 transformEend = Matrix4.Identity;
+            //transformEend *= Matrix4.CreateTranslation(0, 0, -9);
 
             // load teapot
             mesh = new Mesh("../../assets/teapot.obj", wood, transform);
@@ -63,8 +63,9 @@ namespace Template_P3
             //fill the scenegraph
             //graph.master = new Node(floor);
             //graph.Add(mesh);         
-            graph.Add(eendM);
+            
             graph.Add(floor);
+            graph.master.children[0].Add(new Node(eendM));//Add(eendM);
 
             // initialize stopwatch
             timer = new Stopwatch();
@@ -95,12 +96,12 @@ namespace Template_P3
             if (Keyboard.GetState().IsKeyDown(Key.A)) cam.camPos *= Matrix4.CreateTranslation(new Vector3(moveSpeed, 0, 0));
             if (Keyboard.GetState().IsKeyDown(Key.D)) cam.camPos *= Matrix4.CreateTranslation(new Vector3(-1 * moveSpeed, 0, 0));
             if (Keyboard.GetState().IsKeyDown(Key.W)) cam.camPos *= Matrix4.CreateTranslation(new Vector3(0, 0, moveSpeed));
-            if (Keyboard.GetState().IsKeyDown(Key.S)) cam.camPos *= Matrix4.CreateTranslation(new Vector3(0, 0, moveSpeed * -1));
+            if (Keyboard.GetState().IsKeyDown(Key.S)) cam.camPos *= Matrix4.CreateTranslation(new Vector3(0, 0, -1 * moveSpeed));
 
-            //if (newMouseX != oldMouseX)//Y rotation
-              //  cam.camPos *= Matrix4.CreateRotationY(camSpeed * (newMouseX - oldMouseX) * 0.01f);
-           // if (newMouseY != oldMouseY)//X rotation
-           //     cam.camPos *= Matrix4.CreateRotationX(camSpeed * (newMouseY - oldMouseY) * 0.01f);
+            if (newMouseX != oldMouseX)//Y rotation
+                cam.camPos *= Matrix4.CreateRotationY(camSpeed * (newMouseX - oldMouseX) * 0.01f );
+            if (newMouseY != oldMouseY)//X rotation
+                cam.camPos *=  Matrix4.CreateRotationX(camSpeed * (newMouseY - oldMouseY) * 0.01f );
 
         }
 
@@ -113,9 +114,7 @@ namespace Template_P3
             timer.Start();
 
             // prepare matrix for vertex shader
-            Matrix4 transform = Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), a);
-            transform *= Matrix4.CreateTranslation(0, -4, -15);
-            transform *= Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 1000);
+            Matrix4 transform = Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), a * 0.001f);        
 
             //graph.master.thisTransform = Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), 1f) * graph.master.thisTransform;
 
@@ -133,7 +132,7 @@ namespace Template_P3
                 //floor.Render(shader, transform, wood);
 
                 //render the scenegraph
-                graph.Render(shader, cam.camPos);
+                graph.Render(shader, cam);
 
                 // render quad
                 target.Unbind();

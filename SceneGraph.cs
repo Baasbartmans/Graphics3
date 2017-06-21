@@ -13,9 +13,9 @@ namespace template_P3
     {
         public Node master = new Node(null);
 
-        public void Render(Shader shader, Matrix4 camPos)
+        public void Render(Shader shader, Camera cam)
         {
-            master.Render(shader, camPos);
+            master.Render(shader, cam);
         }
 
         public void Add(Mesh m)
@@ -51,14 +51,14 @@ namespace template_P3
             children.Add(child);
         }
 
-        public void Render(Shader shader, Matrix4 camPos)
+        public void Render(Shader shader, Camera cam)
         {
             foreach (Node n in children)
             {
-                n.Render(shader, camPos);
+                n.Render(shader, cam);
             }
             if(mesh != null)
-            mesh.Render(shader, camPos * thisTransform, mesh.texture);
+            mesh.Render(shader, cam.camPos * thisTransform * Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 1000), mesh.texture);
         }
 
 
