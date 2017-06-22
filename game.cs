@@ -54,6 +54,10 @@ namespace Template_P3
             //graph.Add(mesh);         
             graph.Add(eendM);  
 
+            Vector3 lightpos = new Vector3(2, 6, 4);
+            Vector3 lightIntensity = new Vector3(50, 0.4f, 3);
+            light myLight = new light(lightpos, lightIntensity);
+
             // initialize stopwatch
             timer = new Stopwatch();
             timer.Reset();
@@ -61,7 +65,7 @@ namespace Template_P3
             // create shaders
             shader = new Shader("../../shaders/vs.glsl", "../../shaders/fs.glsl");
             postproc = new Shader("../../shaders/vs_post.glsl", "../../shaders/fs_post.glsl");
-           
+            
             // create the render target
             target = new RenderTarget(screen.width, screen.height);
             quad = new ScreenQuad();
