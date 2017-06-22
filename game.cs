@@ -3,6 +3,7 @@ using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 using template_P3;
+using OpenTK.Input;
 
 // minimal OpenTK rendering framework for UU/INFOGR
 // Jacco Bikker, 2016
@@ -26,23 +27,33 @@ namespace Template_P3
         bool useRenderTarget = true;
 
         SceneGraph graph = new SceneGraph();    // add the scenegraph which will contain all objects
+        Camera cam = new Camera(new Vector3(0, 0, 0));
+        float moveSpeed = 0.5f;
+        float camSpeed = 0.2f;
+
+        float oldMouseX = 0;
+        float newMouseX = 0;
+        float oldMouseY = 0;
+        float newMouseY = 0;
+
+
 
         // initialize
         public void Init()
         {
             // load a texture
             wood = new Texture("../../assets/wood.jpg");
-            eend = new Texture("../../assets/fur.jpg");
+            eend = new Texture("../../assets/eend texture (1).jpg");
 
 
             //load transform
-            Matrix4 transform = Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), a);
-            transform *= Matrix4.CreateTranslation(0, -4, -15);
-            transform *= Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 1000);
+            Matrix4 transform = Matrix4.CreateTranslation(new Vector3(0, 9, -8));//Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), a);
 
-            Matrix4 transformEend = Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), a);
-            transformEend *= Matrix4.CreateTranslation(0, 0, -9);
-            transformEend *= Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 1000);
+            Matrix4 transformEend = Matrix4.CreateTranslation(new Vector3(0, 11.2f, -8));//Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), a);
+
+
+            //Matrix4 transformEend = Matrix4.Identity;
+            //transformEend *= Matrix4.CreateTranslation(0, 0, -9);
 
             // load teapot
             mesh = new Mesh("../../assets/teapot.obj", wood, transform);
@@ -50,13 +61,11 @@ namespace Template_P3
             eendM = new Mesh("../../assets/4Voet.obj", eend, transformEend);
 
             //fill the scenegraph
-            graph.master = new Node(floor);
+            //graph.master = new Node(floor);
             //graph.Add(mesh);         
-            graph.Add(eendM);  
-
-            Vector3 lightpos = new Vector3(2, 6, 4);
-            Vector3 lightIntensity = new Vector3(50, 0.4f, 3);
-            light myLight = new light(lightpos, lightIntensity);
+            
+            graph.Add(floor);
+            graph.master.children[0].Add(new Node(eendM));//Add(eendM);
 
             // initialize stopwatch
             timer = new Stopwatch();
@@ -65,7 +74,7 @@ namespace Template_P3
             // create shaders
             shader = new Shader("../../shaders/vs.glsl", "../../shaders/fs.glsl");
             postproc = new Shader("../../shaders/vs_post.glsl", "../../shaders/fs_post.glsl");
-            
+
             // create the render target
             target = new RenderTarget(screen.width, screen.height);
             quad = new ScreenQuad();
@@ -76,6 +85,24 @@ namespace Template_P3
         {
             screen.Clear(0);
             screen.Print("hello world", 2, 2, 0xffff00);
+
+            oldMouseX = newMouseX;
+            newMouseX = Mouse.GetState().X;
+
+            oldMouseY = newMouseY;
+            newMouseY = Mouse.GetState().Y;
+
+
+            if (Keyboard.GetState().IsKeyDown(Key.A)) cam.camPos *= Matrix4.CreateTranslation(new Vector3(moveSpeed, 0, 0));
+            if (Keyboard.GetState().IsKeyDown(Key.D)) cam.camPos *= Matrix4.CreateTranslation(new Vector3(-1 * moveSpeed, 0, 0));
+            if (Keyboard.GetState().IsKeyDown(Key.W)) cam.camPos *= Matrix4.CreateTranslation(new Vector3(0, 0, moveSpeed));
+            if (Keyboard.GetState().IsKeyDown(Key.S)) cam.camPos *= Matrix4.CreateTranslation(new Vector3(0, 0, -1 * moveSpeed));
+
+            if (newMouseX != oldMouseX)//Y rotation
+                cam.camPos *= Matrix4.CreateRotationY(camSpeed * (newMouseX - oldMouseX) * 0.01f );
+            if (newMouseY != oldMouseY)//X rotation
+                cam.camPos *=  Matrix4.CreateRotationX(camSpeed * (newMouseY - oldMouseY) * 0.01f );
+
         }
 
         // tick for OpenGL rendering code
@@ -87,9 +114,9 @@ namespace Template_P3
             timer.Start();
 
             // prepare matrix for vertex shader
-            Matrix4 transform = Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), a);
-            transform *= Matrix4.CreateTranslation(0, -4, -15);
-            transform *= Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 1000);
+            Matrix4 transform = Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), a * 0.001f);        
+
+            //graph.master.thisTransform = Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), 1f) * graph.master.thisTransform;
 
             // update rotation
             a += 0.001f * frameDuration;
@@ -105,7 +132,7 @@ namespace Template_P3
                 //floor.Render(shader, transform, wood);
 
                 //render the scenegraph
-                graph.Render(shader);
+                graph.Render(shader, cam);
 
                 // render quad
                 target.Unbind();
