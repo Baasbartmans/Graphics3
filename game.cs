@@ -15,13 +15,13 @@ namespace Template_P3
     {
         // member variables
         public Surface screen;                  // background surface for printing etc.
-        Mesh mesh, floor, eendM;                       // a mesh to draw using OpenGL
+        Mesh mesh, floor, eendM, skyBoxM;        // a mesh to draw using OpenGL
         const float PI = 3.1415926535f;         // PI
         float a = 0;                            // teapot rotation angle
         Stopwatch timer;                        // timer for measuring frame duration
         Shader shader;                          // shader to use for rendering
         Shader postproc;                        // shader to use for post processing
-        Texture wood, eend;                           // texture to use for rendering
+        Texture wood, eend, skyBox;              // texture to use for rendering
         RenderTarget target;                    // intermediate render target
         ScreenQuad quad;                        // screen filling quad for post processing
         bool useRenderTarget = true;
@@ -44,12 +44,15 @@ namespace Template_P3
             // load a texture
             wood = new Texture("../../assets/wood.jpg");
             eend = new Texture("../../assets/eend texture (1).jpg");
+            skyBox = new Texture("../../assets/skybox.jpg");
 
 
             //load transform
             Matrix4 transform = Matrix4.CreateTranslation(new Vector3(0, 9, -8));//Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), a);
 
             Matrix4 transformEend = Matrix4.CreateTranslation(new Vector3(0, 11.2f, -8));//Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), a);
+
+            Matrix4 skyBoxTrans = Matrix4.CreateTranslation(Vector3.Zero);
 
 
             //Matrix4 transformEend = Matrix4.Identity;
@@ -59,13 +62,15 @@ namespace Template_P3
             mesh = new Mesh("../../assets/teapot.obj", wood, transform);
             floor = new Mesh("../../assets/floor.obj", wood, transform);
             eendM = new Mesh("../../assets/4Voet.obj", eend, transformEend);
+            skyBoxM = new Mesh("../../assets/SBB.obj", skyBox, skyBoxTrans);
 
             //fill the scenegraph
             //graph.master = new Node(floor);
             //graph.Add(mesh);         
             
             graph.Add(floor);
-            graph.master.children[0].Add(new Node(eendM));//Add(eendM);
+            graph.Add(skyBoxM);
+            graph.Add(eendM);//Add(eendM);
 
             //adding the light, which isn't actually getting pushed into the shader yet though
             Vector3 lightpos = new Vector3(2, 6, 4);
