@@ -67,6 +67,12 @@ namespace Template_P3
             graph.Add(floor);
             graph.master.children[0].Add(new Node(eendM));//Add(eendM);
 
+            //adding the light, which isn't actually getting pushed into the shader yet though
+            Vector3 lightpos = new Vector3(2, 6, 4);
+            Vector3 lightIntensity = new Vector3(50, 0.4f, 3);
+            light myLight = new light(lightpos, lightIntensity);
+
+
             // initialize stopwatch
             timer = new Stopwatch();
             timer.Reset();
