@@ -44,7 +44,7 @@ namespace Template_P3
             // load a texture
             wood = new Texture("../../assets/wood.jpg");
             eend = new Texture("../../assets/eend texture (1).jpg");
-            skyBox = new Texture("../../assets/skybox.jpg");
+            skyBox = new Texture("../../assets/skybox2.jpg");
 
 
             //load transform

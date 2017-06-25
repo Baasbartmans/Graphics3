@@ -15,10 +15,11 @@ out vec4 outputColor;
 // fragment shader
 void main()
 {
-	vec4 L = lightpos1 - intersectionPoint;
-	float diff = lightintensity1 / sqrt(L.x * L.x + L.y * L.y + L.z * L.z);
-	float ndotl = dot(normalize(L).xyz, normal.xyz);
-    outputColor = ambientColor + ndotl * diff * texture( pixels, uv );
+	//vec4 L = lightpos1 - intersectionPoint;
+	//float diff = lightintensity1 / sqrt(L.x * L.x + L.y * L.y + L.z * L.z);
+	//float ndotl = dot(normalize(L).xyz, normal.xyz);
+    //outputColor = ambientColor + ndotl * diff * texture( pixels, uv );
+	outputColor = texture( pixels, uv);
 	
 	// + 0.5f * vec4( normal.xyz, 1 );
 }
