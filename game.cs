@@ -125,7 +125,8 @@ namespace Template_P3
             timer.Start();
 
             // prepare matrix for vertex shader
-            Matrix4 transform = Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), a * 0.001f);        
+            Matrix4 transform = Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), a * 0.001f);
+            Matrix4 toWorld = transform;       
 
             //graph.master.thisTransform = Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), 1f) * graph.master.thisTransform;
 
@@ -152,8 +153,9 @@ namespace Template_P3
             else
             {
                 // render scene directly to the screen
-                mesh.Render(shader, transform, wood);
-                floor.Render(shader, transform, wood);
+                Vector3 camPos = cam.camPos.Column3.Xyz;
+                mesh.Render(shader, transform, wood, toWorld, camPos);
+                floor.Render(shader, transform, wood, toWorld, camPos);
             }
         }
     }

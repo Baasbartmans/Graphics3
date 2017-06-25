@@ -10,6 +10,7 @@ out vec4 normal;			// transformed vertex normal
 out vec2 uv;			
 out vec4 intersectionPoint;	
 uniform mat4 transform;
+uniform mat4 toWorld;
  
 // vertex shader
 void main()
@@ -18,7 +19,7 @@ void main()
 	gl_Position = transform * vec4(vPosition, 1.0);
 
 	// forward normal and uv coordinate; will be interpolated over triangle
-	normal = transform * vec4( vNormal, 0.0f );
+	normal = toWorld * vec4( vNormal, 0.0f );
 	uv = vUV;
-	intersectionPoint = gl_Position;
+	intersectionPoint = toWorld * vec4(vPosition, 1.0);
 }

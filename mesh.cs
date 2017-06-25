@@ -54,7 +54,7 @@ namespace Template_P3
         }
 
         // render the mesh using the supplied shader and matrix
-        public void Render(Shader shader, Matrix4 transform, Texture texture)
+        public void Render(Shader shader, Matrix4 transform, Texture texture, Matrix4 toWorld, Vector3 cameraPos)
         {
             // on first run, prepare buffers
             Prepare(shader);
@@ -71,8 +71,14 @@ namespace Template_P3
             // pass transform to vertex shader
             GL.UniformMatrix4(shader.uniform_mview, false, ref transform);
 
+            // pass toWorld to vertex shader
+            GL.UniformMatrix4(shader.uniform_toWorld, false, ref toWorld);
+
+            //pass camera location for specular lighting to shader:
+            GL.Uniform3(GL.GetUniformLocation(shader.programID, "cameraPos"), cameraPos);
+
             // passsing ambience variable to shader:
-            float f = 0.06f;
+            float f = 0.05f;
             Vector4 ambience = new Vector4(f, f, f, f);
             GL.Uniform4(GL.GetUniformLocation(shader.programID, "ambientColor"), ambience);
 
