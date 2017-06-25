@@ -70,8 +70,7 @@ namespace template_P3
                 n.Render(shader, cam);
             }
             if(mesh != null)
-            mesh.Render(shader, rotate * cam.camPos * parentTransform * meshTransform * Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 10000), mesh.texture);
-            mesh.Render(shader, cam.camPos * thisTransform * Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 10000), mesh.texture, thisTransform, new Vector3(cam.camPos.Column0.W, cam.camPos.Column1.W, cam.camPos.Column2.W));
+            mesh.Render(shader, rotate * cam.camPos * parentTransform * meshTransform * Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 10000), mesh.texture, thisTransform, new Vector3(cam.camPos.Column0.W, cam.camPos.Column1.W, cam.camPos.Column2.W));
         }
 
 

@@ -126,9 +126,8 @@ namespace Template_P3
             timer.Start();
 
             // prepare matrix for vertex shader
-            Matrix4 transform = Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), a * 0.001f);
-            Matrix4 toWorld = transform;       
             Matrix4 transform = Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), 0.01f);
+            Matrix4 toWorld = transform;       
 
             graph.master.children[0].Rotate(transform);
             //graph.master.children[2].rotate = graph.master.children[2].rotate * transform;
