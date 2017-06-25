@@ -16,6 +16,7 @@ namespace Template_P3
         // constructor
         public ScreenQuad()
         {
+            //load the the colors for color grading
             colorMap = new Texture("../../assets/ColorMapFixed.jpg");
         }
 
@@ -40,10 +41,7 @@ namespace Template_P3
 
             // enable texture
             int texLoc = GL.GetUniformLocation(shader.programID, "pixels");
-            int colCub = GL.GetUniformLocation(shader.programID, "colCub");
-
-            GL.Uniform1(texLoc, 0);
-            GL.Uniform1(colCub, 1);
+            int colCub = GL.GetUniformLocation(shader.programID, "colCub");           
 
             GL.ActiveTexture(TextureUnit.Texture0);
             GL.BindTexture(TextureTarget.Texture2D, textureID);
@@ -53,6 +51,10 @@ namespace Template_P3
 
             // enable shader
             GL.UseProgram(shader.programID);
+
+            //uniforms
+            GL.Uniform1(texLoc, 0);
+            GL.Uniform1(colCub, 1);
 
             // enable position and uv attributes
             GL.EnableVertexAttribArray(shader.attribute_vpos);

@@ -30,18 +30,30 @@ namespace template_P3
         public List<Node> children = new List<Node>();
         Matrix4 parentTransform = Matrix4.CreateTranslation(new Vector3(0,0,0));
         public Matrix4 thisTransform = Matrix4.CreateTranslation(new Vector3(0,0,0));
+        public Matrix4 meshTransform = Matrix4.CreateTranslation(new Vector3(0, 0, 0));
+        public Matrix4 rotate = Matrix4.CreateTranslation(new Vector3(0, 0, 0));
         Mesh mesh;
 
         public Node(Mesh mesh)
         {
             if (mesh != null)
             {
-                thisTransform = parentTransform * mesh.transform;
+                //thisTransform = parentTransform * mesh.transform;
+                meshTransform = mesh.transform;
                 this.mesh = mesh;
             }
             else
             {
                 thisTransform = Matrix4.CreateTranslation(new Vector3(0, 0, 0));
+            }
+        }
+
+        public void Rotate(Matrix4 r)
+        {
+            rotate = rotate * r;
+            foreach (Node n in children)
+            {
+                n.rotate = n.rotate * r;
             }
         }
 
@@ -58,6 +70,7 @@ namespace template_P3
                 n.Render(shader, cam);
             }
             if(mesh != null)
+            mesh.Render(shader, rotate * cam.camPos * parentTransform * meshTransform * Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 10000), mesh.texture);
             mesh.Render(shader, cam.camPos * thisTransform * Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 10000), mesh.texture, thisTransform, new Vector3(cam.camPos.Column0.W, cam.camPos.Column1.W, cam.camPos.Column2.W));
         }
 
