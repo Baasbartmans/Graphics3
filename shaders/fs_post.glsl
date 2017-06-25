@@ -21,16 +21,17 @@ void main()
 	vec3 vignet = vec3(1 - dist - vI,1 - dist - vI,1 - dist - vI);
 
 	//chromatic aberrations
-	//vec3 colLook = vec3(0,0,0);
-	//colLook.r = texture( pixels, vec2(uv.x + (dx * caI), uv.y  + (dy * caI)) ).r;
-	//colLook.g = texture( pixels, vec2(uv.x , uv.y ) ).g;
-	//colLook.b = texture( pixels, vec2(uv.x - (dx * caI), uv.y  - (dy * caI)) ).b;
-	//vec2 colGrad = vec2((colLook.r * 64),(colLook.b * 4032) + (colLook.g * 64) );
+	vec3 colLook = vec3(0,0,0);
+	float div = 0.00389105058365758754863813229572; // = 1/257
+	colLook.r = texture( pixels, vec2(uv.x + (dx * caI), uv.y  + (dy * caI)) ).r;
+	colLook.g = texture( pixels, vec2(uv.x , uv.y ) ).g;
+	colLook.b = texture( pixels, vec2(uv.x - (dx * caI), uv.y  - (dy * caI)) ).b;
+	vec2 colGrad = vec2( ( (colLook.b * 256) + colLook.g) * div, colLook.r );
 	
 	//color grading
-	outputColor.r = texture( colCub, uv).r * vignet.r;
-	outputColor.g = texture( colCub, uv).g * vignet.g;
-	outputColor.b = texture( colCub, uv).b * vignet.b;
+	outputColor.r = texture( colCub, colGrad).r * vignet.r;
+	outputColor.g = texture( colCub, colGrad).g * vignet.g;
+	outputColor.b = texture( colCub, colGrad).b * vignet.b;
 
 	
 }

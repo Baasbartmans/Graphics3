@@ -4,6 +4,7 @@ using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 using template_P3;
 using OpenTK.Input;
+using System;
 
 // minimal OpenTK rendering framework for UU/INFOGR
 // Jacco Bikker, 2016
@@ -70,7 +71,7 @@ namespace Template_P3
             
             graph.Add(floor);
             graph.Add(skyBoxM);
-            graph.Add(eendM);//Add(eendM);
+            graph.master.children[0].Add(new Node(eendM));//Add(eendM);
 
             // initialize stopwatch
             timer = new Stopwatch();
@@ -119,13 +120,10 @@ namespace Template_P3
             timer.Start();
 
             // prepare matrix for vertex shader
-            Matrix4 transform = Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), a * 0.001f);        
+            Matrix4 transform = Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), 0.01f);
 
-            //graph.master.thisTransform = Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), 1f) * graph.master.thisTransform;
-
-            // update rotation
-            a += 0.001f * frameDuration;
-            if (a > 2 * PI) a -= 2 * PI;
+            graph.master.children[0].Rotate(transform);
+            //graph.master.children[2].rotate = graph.master.children[2].rotate * transform;
 
             if (useRenderTarget)
             {
