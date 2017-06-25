@@ -16,7 +16,9 @@ out vec4 outputColor;
 // fragment shader
 void main()
 {
-	lightpos1 = cameraPos;
+
+	//camera position is probably incorrect.
+
 	vec3 L = lightpos1 - intersectionPoint.xyz;
 	vec3 C = normalize(intersectionPoint.xyz - cameraPos); // supposed to be a normalized version of the vector from the camera to the intersection point, reflected in the normal of the surface of the reflection point
 	float diff = lightintensity1 / (L.x * L.x + L.y * L.y + L.z * L.z);

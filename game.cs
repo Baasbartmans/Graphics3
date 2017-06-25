@@ -153,7 +153,7 @@ namespace Template_P3
             else
             {
                 // render scene directly to the screen
-                Vector3 camPos = cam.camPos.Column3.Xyz;
+                Vector3 camPos = new Vector3(cam.camPos.Column0.W, cam.camPos.Column1.W, cam.camPos.Column2.W);
                 mesh.Render(shader, transform, wood, toWorld, camPos);
                 floor.Render(shader, transform, wood, toWorld, camPos);
             }
