@@ -20,9 +20,6 @@ namespace Template_P3
         int triangleBufferId;                   // triangle buffer
         int quadBufferId;						// quad buffer
 
-        
-
-
         // constructor
         public Mesh(string fileName, Texture texture, Matrix4 transform)
         {
@@ -30,6 +27,7 @@ namespace Template_P3
             loader.Load(this, fileName);
             this.texture = texture;
             this.transform = transform;
+            
         }
 
         // initialization; called during first render
