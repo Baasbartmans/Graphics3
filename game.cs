@@ -71,7 +71,7 @@ namespace Template_P3
             //fill the scenegraph
             //graph.master = new Node(floor);
             //graph.Add(mesh);         
-                       
+
             graph.Add(skyBoxM);
             graph.Add(floor);
             graph.master.children[1].Add(new Node(eendM));//Add(eendM);
@@ -109,18 +109,43 @@ namespace Template_P3
             newMouseY = Mouse.GetState().Y;
 
 
-            if (Keyboard.GetState().IsKeyDown(Key.A)) cam.camPos *= Matrix4.CreateTranslation(new Vector3(moveSpeed, 0, 0));
-            if (Keyboard.GetState().IsKeyDown(Key.D)) cam.camPos *= Matrix4.CreateTranslation(new Vector3(-1 * moveSpeed, 0, 0));
-            if (Keyboard.GetState().IsKeyDown(Key.W)) cam.camPos *= Matrix4.CreateTranslation(new Vector3(0, 0, moveSpeed));
-            if (Keyboard.GetState().IsKeyDown(Key.S)) cam.camPos *= Matrix4.CreateTranslation(new Vector3(0, 0, -1 * moveSpeed));
-            if (Keyboard.GetState().IsKeyDown(Key.Space)) cam.camPos *= Matrix4.CreateTranslation(new Vector3(0, -1 * moveSpeed, 0));
-            if (Keyboard.GetState().IsKeyDown(Key.ShiftLeft)) cam.camPos *= Matrix4.CreateTranslation(new Vector3(0, moveSpeed, 0));
+            if (Keyboard.GetState().IsKeyDown(Key.A))
+            {
+                cam.camPos *= Matrix4.CreateTranslation(new Vector3(moveSpeed, 0, 0));
+                cam.camTrans *=Matrix4.CreateTranslation(new Vector3(moveSpeed, 0, 0));
+            }
+            if (Keyboard.GetState().IsKeyDown(Key.D))
+            {
+                cam.camPos *= Matrix4.CreateTranslation(new Vector3(-1 * moveSpeed, 0, 0));
+                cam.camTrans *= Matrix4.CreateTranslation(new Vector3(-1 * moveSpeed, 0, 0));
+            }
+            if (Keyboard.GetState().IsKeyDown(Key.W))
+            {
+                cam.camPos *= Matrix4.CreateTranslation(new Vector3(0, 0, moveSpeed));
+                cam.camTrans *= Matrix4.CreateTranslation(new Vector3(0, 0, moveSpeed));
+            }
+            if (Keyboard.GetState().IsKeyDown(Key.S))
+            {
+                cam.camPos *= Matrix4.CreateTranslation(new Vector3(0, 0, -1 * moveSpeed));
+                cam.camTrans *= Matrix4.CreateTranslation(new Vector3(0, 0, -1 * moveSpeed));
+            }
+            if (Keyboard.GetState().IsKeyDown(Key.Space))
+            {
+                cam.camPos *= Matrix4.CreateTranslation(new Vector3(0, -1 * moveSpeed, 0));
+                cam.camTrans *= Matrix4.CreateTranslation(new Vector3(0, -1 * moveSpeed, 0));
+            }
+            if (Keyboard.GetState().IsKeyDown(Key.ShiftLeft))
+            {
+                cam.camPos *= Matrix4.CreateTranslation(new Vector3(0, moveSpeed, 0));
+                cam.camTrans *= Matrix4.CreateTranslation(new Vector3(0, moveSpeed, 0));
+            }
+
 
 
             if (newMouseX != oldMouseX)//Y rotation
-                cam.camPos *= Matrix4.CreateRotationY(camSpeed * (newMouseX - oldMouseX) * 0.01f );
+                cam.camPos *= Matrix4.CreateRotationY(camSpeed * (newMouseX - oldMouseX) * 0.01f);
             if (newMouseY != oldMouseY)//X rotation
-                cam.camPos *=  Matrix4.CreateRotationX(camSpeed * (newMouseY - oldMouseY) * 0.01f );
+                cam.camPos *= Matrix4.CreateRotationX(camSpeed * (newMouseY - oldMouseY) * 0.01f);
 
         }
 
@@ -134,7 +159,7 @@ namespace Template_P3
 
             // prepare matrix for vertex shader
             Matrix4 transform = Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), 0.01f);
-            Matrix4 toWorld = transform;       
+            Matrix4 toWorld = transform;
 
             graph.master.children[1].Rotate(Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), 0.001f));
             graph.master.children[1].children[0].Rotate(Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), 0.01f));
