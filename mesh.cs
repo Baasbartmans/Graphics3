@@ -19,14 +19,16 @@ namespace Template_P3
         int vertexBufferId;                     // vertex buffer
         int triangleBufferId;                   // triangle buffer
         int quadBufferId;						// quad buffer
+        string name;
 
         // constructor
-        public Mesh(string fileName, Texture texture, Matrix4 transform)
+        public Mesh(string fileName, Texture texture, Matrix4 transform, string name)
         {
             MeshLoader loader = new MeshLoader();
             loader.Load(this, fileName);
             this.texture = texture;
             this.transform = transform;
+            this.name = name;
             
         }
 

@@ -49,31 +49,33 @@ namespace Template_P3
 
 
             //load transform
-            Matrix4 transform = Matrix4.CreateTranslation(new Vector3(0, 9, -8));//Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), a);
+            Matrix4 transform = Matrix4.CreateTranslation(new Vector3(0, 0, 0));//Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), a);
 
-            Matrix4 transformEend = Matrix4.CreateTranslation(new Vector3(0, 11.2f, -8));//Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), a);
+            Matrix4 transformEend = Matrix4.CreateTranslation(new Vector3(10, 3, 0));//Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), a);
 
             Matrix4 skyBoxTrans = Matrix4.CreateTranslation(Vector3.Zero);
+
+            Matrix4 transformS = Matrix4.CreateTranslation(new Vector3(5, 5, 0));
 
 
             //Matrix4 transformEend = Matrix4.Identity;
             //transformEend *= Matrix4.CreateTranslation(0, 0, -9);
 
             // load teapot
-            mesh = new Mesh("../../assets/teapot.obj", wood, transform);
-            floor = new Mesh("../../assets/floor.obj", wood, transform);
-            eendM = new Mesh("../../assets/4Voet.obj", eend, transformEend);
-            skyBoxM = new Mesh("../../assets/SBB.obj", skyBox, skyBoxTrans);
-            Sphere = new Mesh("../../assets/Mad sphere.obj", wood, transform);
+            mesh = new Mesh("../../assets/teapot.obj", wood, transform, "mesh");
+            floor = new Mesh("../../assets/floor.obj", wood, transform, "floor");
+            eendM = new Mesh("../../assets/4Voet.obj", eend, transformEend, "eend");
+            skyBoxM = new Mesh("../../assets/SBB.obj", skyBox, skyBoxTrans, "skybox");
+            Sphere = new Mesh("../../assets/Mad sphere.obj", wood, transformS, "sphere");
 
             //fill the scenegraph
             //graph.master = new Node(floor);
             //graph.Add(mesh);         
-            
-            graph.Add(floor);
+
             graph.Add(skyBoxM);
-            graph.master.children[0].Add(new Node(eendM));//Add(eendM);
-            graph.Add(Sphere);
+            graph.Add(floor);
+            graph.master.children[1].Add(new Node(eendM));//Add(eendM);
+            graph.master.children[1].children[0].Add(new Node(Sphere));
 
             //adding the light, which isn't actually getting pushed into the shader yet though
             Vector3 lightpos = new Vector3(2, 6, 4);
@@ -106,19 +108,44 @@ namespace Template_P3
             oldMouseY = newMouseY;
             newMouseY = Mouse.GetState().Y;
 
-            Console.WriteLine(cam.camPos.Column0.W);
-            if (Keyboard.GetState().IsKeyDown(Key.A)) cam.camPos *= Matrix4.CreateTranslation(new Vector3(moveSpeed, 0, 0));
-            if (Keyboard.GetState().IsKeyDown(Key.D)) cam.camPos *= Matrix4.CreateTranslation(new Vector3(-1 * moveSpeed, 0, 0));
-            if (Keyboard.GetState().IsKeyDown(Key.W)) cam.camPos *= Matrix4.CreateTranslation(new Vector3(0, 0, moveSpeed));
-            if (Keyboard.GetState().IsKeyDown(Key.S)) cam.camPos *= Matrix4.CreateTranslation(new Vector3(0, 0, -1 * moveSpeed));
-            if (Keyboard.GetState().IsKeyDown(Key.Space)) cam.camPos *= Matrix4.CreateTranslation(new Vector3(0, -1 * moveSpeed, 0));
-            if (Keyboard.GetState().IsKeyDown(Key.ShiftLeft)) cam.camPos *= Matrix4.CreateTranslation(new Vector3(0, moveSpeed, 0));
+
+            if (Keyboard.GetState().IsKeyDown(Key.A))
+            {
+                cam.camPos *= Matrix4.CreateTranslation(new Vector3(moveSpeed, 0, 0));
+                cam.camTrans *=Matrix4.CreateTranslation(new Vector3(moveSpeed, 0, 0));
+            }
+            if (Keyboard.GetState().IsKeyDown(Key.D))
+            {
+                cam.camPos *= Matrix4.CreateTranslation(new Vector3(-1 * moveSpeed, 0, 0));
+                cam.camTrans *= Matrix4.CreateTranslation(new Vector3(-1 * moveSpeed, 0, 0));
+            }
+            if (Keyboard.GetState().IsKeyDown(Key.W))
+            {
+                cam.camPos *= Matrix4.CreateTranslation(new Vector3(0, 0, moveSpeed));
+                cam.camTrans *= Matrix4.CreateTranslation(new Vector3(0, 0, moveSpeed));
+            }
+            if (Keyboard.GetState().IsKeyDown(Key.S))
+            {
+                cam.camPos *= Matrix4.CreateTranslation(new Vector3(0, 0, -1 * moveSpeed));
+                cam.camTrans *= Matrix4.CreateTranslation(new Vector3(0, 0, -1 * moveSpeed));
+            }
+            if (Keyboard.GetState().IsKeyDown(Key.Space))
+            {
+                cam.camPos *= Matrix4.CreateTranslation(new Vector3(0, -1 * moveSpeed, 0));
+                cam.camTrans *= Matrix4.CreateTranslation(new Vector3(0, -1 * moveSpeed, 0));
+            }
+            if (Keyboard.GetState().IsKeyDown(Key.ShiftLeft))
+            {
+                cam.camPos *= Matrix4.CreateTranslation(new Vector3(0, moveSpeed, 0));
+                cam.camTrans *= Matrix4.CreateTranslation(new Vector3(0, moveSpeed, 0));
+            }
+
 
 
             if (newMouseX != oldMouseX)//Y rotation
-                cam.camPos *= Matrix4.CreateRotationY(camSpeed * (newMouseX - oldMouseX) * 0.01f );
+                cam.camPos *= Matrix4.CreateRotationY(camSpeed * (newMouseX - oldMouseX) * 0.01f);
             if (newMouseY != oldMouseY)//X rotation
-                cam.camPos *=  Matrix4.CreateRotationX(camSpeed * (newMouseY - oldMouseY) * 0.01f );
+                cam.camPos *= Matrix4.CreateRotationX(camSpeed * (newMouseY - oldMouseY) * 0.01f);
 
         }
 
@@ -132,9 +159,10 @@ namespace Template_P3
 
             // prepare matrix for vertex shader
             Matrix4 transform = Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), 0.01f);
-            Matrix4 toWorld = transform;       
+            Matrix4 toWorld = transform;
 
-            graph.master.children[0].Rotate(transform);
+            graph.master.children[1].Rotate(Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), 0.001f));
+            graph.master.children[1].children[0].Rotate(Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), 0.01f));
             //graph.master.children[2].rotate = graph.master.children[2].rotate * transform;
 
             if (useRenderTarget)
