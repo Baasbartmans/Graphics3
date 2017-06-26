@@ -106,7 +106,7 @@ namespace Template_P3
             oldMouseY = newMouseY;
             newMouseY = Mouse.GetState().Y;
 
-
+            Console.WriteLine(cam.camPos.Column0.W);
             if (Keyboard.GetState().IsKeyDown(Key.A)) cam.camPos *= Matrix4.CreateTranslation(new Vector3(moveSpeed, 0, 0));
             if (Keyboard.GetState().IsKeyDown(Key.D)) cam.camPos *= Matrix4.CreateTranslation(new Vector3(-1 * moveSpeed, 0, 0));
             if (Keyboard.GetState().IsKeyDown(Key.W)) cam.camPos *= Matrix4.CreateTranslation(new Vector3(0, 0, moveSpeed));
