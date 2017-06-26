@@ -16,7 +16,7 @@ namespace Template_P3
     {
         // member variables
         public Surface screen;                  // background surface for printing etc.
-        Mesh mesh, floor, eendM, skyBoxM;        // a mesh to draw using OpenGL
+        Mesh mesh, floor, eendM, skyBoxM, Sphere;        // a mesh to draw using OpenGL
         const float PI = 3.1415926535f;         // PI
         float a = 0;                            // teapot rotation angle
         Stopwatch timer;                        // timer for measuring frame duration
@@ -64,6 +64,7 @@ namespace Template_P3
             floor = new Mesh("../../assets/floor.obj", wood, transform);
             eendM = new Mesh("../../assets/4Voet.obj", eend, transformEend);
             skyBoxM = new Mesh("../../assets/SBB.obj", skyBox, skyBoxTrans);
+            Sphere = new Mesh("../../assets/Mad sphere.obj", wood, transform);
 
             //fill the scenegraph
             //graph.master = new Node(floor);
@@ -72,6 +73,7 @@ namespace Template_P3
             graph.Add(floor);
             graph.Add(skyBoxM);
             graph.master.children[0].Add(new Node(eendM));//Add(eendM);
+            graph.Add(Sphere);
 
             //adding the light, which isn't actually getting pushed into the shader yet though
             Vector3 lightpos = new Vector3(2, 6, 4);
