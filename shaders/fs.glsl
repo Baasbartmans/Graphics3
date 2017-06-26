@@ -7,8 +7,8 @@ in vec4 intersectionPoint;		// the world location of the pixel you are drawing
 uniform sampler2D pixels;		// texture sampler
 uniform vec4 ambientColor;		// color that's added to every value of light
 uniform vec3 cameraPos;			// position of the camera at the time of drawing this.
-vec3 lightpos1 = vec3(0, -16, 0);
-float lightintensity1 = 50;		//supposed to become a vector3
+vec3 lightpos1 = vec3(0, -800, 0);
+float lightintensity1 = 1000000;		//supposed to become a vector3
 
 // shader output
 out vec4 outputColor;

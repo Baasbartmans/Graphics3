@@ -109,6 +109,9 @@ namespace Template_P3
             if (Keyboard.GetState().IsKeyDown(Key.D)) cam.camPos *= Matrix4.CreateTranslation(new Vector3(-1 * moveSpeed, 0, 0));
             if (Keyboard.GetState().IsKeyDown(Key.W)) cam.camPos *= Matrix4.CreateTranslation(new Vector3(0, 0, moveSpeed));
             if (Keyboard.GetState().IsKeyDown(Key.S)) cam.camPos *= Matrix4.CreateTranslation(new Vector3(0, 0, -1 * moveSpeed));
+            if (Keyboard.GetState().IsKeyDown(Key.Space)) cam.camPos *= Matrix4.CreateTranslation(new Vector3(0, -1 * moveSpeed, 0));
+            if (Keyboard.GetState().IsKeyDown(Key.ShiftLeft)) cam.camPos *= Matrix4.CreateTranslation(new Vector3(0, moveSpeed, 0));
+
 
             if (newMouseX != oldMouseX)//Y rotation
                 cam.camPos *= Matrix4.CreateRotationY(camSpeed * (newMouseX - oldMouseX) * 0.01f );
