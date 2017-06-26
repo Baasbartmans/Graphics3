@@ -77,7 +77,7 @@ namespace Template_P3
 
             // passsing ambience variable to shader:
             float f = 0.1f;
-            Vector4 ambience = new Vector4(f, f, f, f);
+            Vector4 ambience = new Vector4(f, f, f, 0);
             GL.Uniform4(GL.GetUniformLocation(shader.programID, "ambientColor"), ambience);
 
             // bind interleaved vertex data
