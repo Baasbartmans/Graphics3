@@ -33,7 +33,11 @@ void main()
 	outputColor.g = texture( colCub, colGrad).g * vignet.g;
 	outputColor.b = texture( colCub, colGrad).b * vignet.b;
 
-	
+	//output without color grading
+	//outputColor.r = texture( pixels, vec2(uv.x + (dx * caI), uv.y  + (dy * caI)) ).r * vignet.r;
+	//outputColor.g = texture( pixels, vec2(uv.x , uv.y ) ).g * vignet.g;
+	//outputColor.b = texture( pixels, vec2(uv.x - (dx * caI), uv.y  - (dy * caI)) ).b * vignet.b;
+
 }
 
 // EOF
