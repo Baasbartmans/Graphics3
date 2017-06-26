@@ -61,7 +61,7 @@ namespace Template_P3
 
             Random rnd = new Random();
             if (rnd.Next(0, 50) == 1)
-                Console.WriteLine(cameraPos.Y);
+                Console.WriteLine(cameraPos.X);
 
 
             // enable texture

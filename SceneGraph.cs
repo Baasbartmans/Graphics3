@@ -77,7 +77,7 @@ namespace template_P3
                 n.Render(shader, cam);
             }
             if(mesh != null)
-            mesh.Render(shader,Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 10000), mesh.texture, rotate * parentTransform * meshTransform * parentRot * cam.camPos, new Vector3(cam.camPos.Column0.W, cam.camPos.Column1.W, cam.camPos.Column2.W));
+            mesh.Render(shader,Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 10000), mesh.texture, rotate * parentTransform * meshTransform * parentRot * cam.camPos, new Vector3(cam.camTrans.Column0.W, cam.camTrans.Column1.W, cam.camTrans.Column2.W));
         }
 
 

@@ -108,7 +108,7 @@ namespace Template_P3
             oldMouseY = newMouseY;
             newMouseY = Mouse.GetState().Y;
 
-
+            Console.WriteLine(cam.camTrans.Column1);
             if (Keyboard.GetState().IsKeyDown(Key.A))
             {
                 cam.camPos *= Matrix4.CreateTranslation(new Vector3(moveSpeed, 0, 0));
@@ -184,7 +184,7 @@ namespace Template_P3
             else
             {
                 // render scene directly to the screen
-                Vector3 camPos = new Vector3(cam.camPos.Column0.W, cam.camPos.Column1.W, cam.camPos.Column2.W);
+                Vector3 camPos = new Vector3(cam.camTrans.Column0.W, cam.camTrans.Column1.W, cam.camTrans.Column2.W);
                 mesh.Render(shader, transform, wood, toWorld, camPos);
                 floor.Render(shader, transform, wood, toWorld, camPos);
             }
