@@ -161,8 +161,7 @@ namespace Template_P3
             Matrix4 transform = Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), 0.01f);
             Matrix4 toWorld = transform;
 
-            graph.master.children[1].Rotate(Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), 0.01f));
-            graph.master.children[1].children[0].Rotate(Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), 0.1f));
+            graph.master.children[1].Rotate(Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), 0.01f));            
             //graph.master.children[2].rotate = graph.master.children[2].rotate * transform;
 
             if (useRenderTarget)
