@@ -59,10 +59,6 @@ namespace Template_P3
             // on first run, prepare buffers
             Prepare(shader);
 
-            Random rnd = new Random();
-            if (rnd.Next(0, 50) == 1)
-                Console.WriteLine(cameraPos.X);
-
 
             // enable texture
             int texLoc = GL.GetUniformLocation(shader.programID, "pixels");

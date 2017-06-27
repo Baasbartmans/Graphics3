@@ -139,9 +139,8 @@ namespace Template_P3
                 cam.camTrans *= Matrix4.CreateTranslation(new Vector3(0, moveSpeed, 0));
             }
 
-            //Console.WriteLine((Matrix4.Invert(cam.totalRotation) * cam.camPos).Column1.W);
-            
-            //Console.WriteLine(cam.camPos.Column0);
+
+
             if (newMouseX != oldMouseX)//Y rotation
                 cam.camPos *= Matrix4.CreateRotationY(camSpeed * (newMouseX - oldMouseX) * 0.01f);
             if (newMouseY != oldMouseY)//X rotation
@@ -183,13 +182,8 @@ namespace Template_P3
             }
             else
             {
-                // render scene directly to the screen\
-                
-                Matrix4 myMatrix = new Matrix4(new Vector4(1, 0, 0, cam.camPos.Column0.W), new Vector4(0, 1, 0, cam.camPos.Column1.W), new Vector4(0, 0, 1, cam.camPos.Column2.W), new Vector4(0, 0, 0, 1));
-                Matrix4 newPos = myMatrix * cam.camPos;
-                Vector3 camPos = new Vector3(newPos.Column0.W, newPos.Column1.W, newPos.Column2.W);
-
-
+                // render scene directly to the screen
+                Vector3 camPos = new Vector3(cam.camTrans.Column0.W, cam.camTrans.Column1.W, cam.camTrans.Column2.W);
                 mesh.Render(shader, transform, wood, toWorld, camPos);
                 floor.Render(shader, transform, wood, toWorld, camPos);
             }

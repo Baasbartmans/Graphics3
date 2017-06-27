@@ -76,8 +76,12 @@ namespace template_P3
             {
                 n.Render(shader, cam);
             }
-            if(mesh != null)
-            mesh.Render(shader,Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 10000), mesh.texture, rotate * parentTransform * meshTransform * parentRot * cam.camPos, new Vector3(cam.camTrans.Column0.W, cam.camTrans.Column1.W, cam.camTrans.Column2.W));
+            Matrix4 myMatrix = new Matrix4(new Vector4(1, 0, 0, cam.camPos.Column0.W), new Vector4(0, 1, 0, cam.camPos.Column1.W), new Vector4(0, 0, 1, cam.camPos.Column2.W), new Vector4(0, 0, 0, 1));
+            Matrix4 newPos = myMatrix * cam.camPos;
+            Vector3 camPos = new Vector3(newPos.Column0.W, newPos.Column1.W, newPos.Column2.W);
+            Console.WriteLine(newPos);
+            if (mesh != null)
+            mesh.Render(shader,Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 10000), mesh.texture, rotate * parentTransform * meshTransform * parentRot * cam.camPos, camPos);
         }
 
 
