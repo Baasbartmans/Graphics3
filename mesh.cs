@@ -19,7 +19,7 @@ namespace Template_P3
         int vertexBufferId;                     // vertex buffer
         int triangleBufferId;                   // triangle buffer
         int quadBufferId;						// quad buffer
-        bool sBox;
+        public bool sBox;
         string name;
 
         // constructor
@@ -81,10 +81,10 @@ namespace Template_P3
             GL.Uniform3(GL.GetUniformLocation(shader.programID, "cameraPos"), cameraPos);
 
             //For some objects we don't want to use the phong shading model
-            if(useShader)
-                GL.Uniform1(GL.GetUniformLocation(shader.programID, "useShader"), 10);
+            if (useShader)
+                GL.Uniform1(GL.GetUniformLocation(shader.programID, "useShader"), 100);
             else
-                GL.Uniform1(GL.GetUniformLocation(shader.programID, "useShader"), -10);
+                GL.Uniform1(GL.GetUniformLocation(shader.programID, "useShader"), -100);
 
             // passsing ambience variable to shader:
             float f = 0.05f;
