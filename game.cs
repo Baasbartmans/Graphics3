@@ -62,11 +62,11 @@ namespace Template_P3
             //transformEend *= Matrix4.CreateTranslation(0, 0, -9);
 
             // load teapot
-            mesh = new Mesh("../../assets/teapot.obj", wood, transform, "mesh");
-            floor = new Mesh("../../assets/floor.obj", wood, transform, "floor");
-            eendM = new Mesh("../../assets/4Voet.obj", eend, transformEend, "eend");
-            skyBoxM = new Mesh("../../assets/SBB.obj", skyBox, skyBoxTrans, "skybox");
-            Sphere = new Mesh("../../assets/Mad sphere.obj", wood, transformS, "sphere");
+            mesh = new Mesh("../../assets/teapot.obj", wood, transform, "mesh", false);
+            floor = new Mesh("../../assets/floor.obj", wood, transform, "floor", false);
+            eendM = new Mesh("../../assets/4Voet.obj", eend, transformEend, "eend", false);
+            skyBoxM = new Mesh("../../assets/SBB.obj", skyBox, skyBoxTrans, "skybox", true);
+            Sphere = new Mesh("../../assets/Mad sphere.obj", wood, transformS, "sphere", false);
 
             //fill the scenegraph
             //graph.master = new Node(floor);
