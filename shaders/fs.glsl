@@ -13,8 +13,8 @@ uniform vec3 cameraPos;			// position of the camera at the time of drawing this.
 //uniform vec3 lightIntensity[lightAmount];
 //uniform vec3 lightSpecular[lightAmount];
 
-vec3 lightpos1 = vec3(0, 1600, 0);
-vec3 light1 = vec3(3000000, 3000000, 3000000);		
+vec3 lightpos1 = vec3(0, 800, 0);
+vec3 light1 = vec3(300000, 300000, 300000);		
 vec3 lightSpec1 = vec3(1, 1, 1);		
 
 // shader output
