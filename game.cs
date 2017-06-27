@@ -111,32 +111,26 @@ namespace Template_P3
             if (Keyboard.GetState().IsKeyDown(Key.A))
             {
                 cam.camPos *= Matrix4.CreateTranslation(new Vector3(moveSpeed, 0, 0));
-                cam.camTrans *=Matrix4.CreateTranslation(new Vector3(moveSpeed, 0, 0));
             }
             if (Keyboard.GetState().IsKeyDown(Key.D))
             {
                 cam.camPos *= Matrix4.CreateTranslation(new Vector3(-1 * moveSpeed, 0, 0));
-                cam.camTrans *= Matrix4.CreateTranslation(new Vector3(-1 * moveSpeed, 0, 0));
             }
             if (Keyboard.GetState().IsKeyDown(Key.W))
             {
                 cam.camPos *= Matrix4.CreateTranslation(new Vector3(0, 0, moveSpeed));
-                cam.camTrans *= Matrix4.CreateTranslation(new Vector3(0, 0, moveSpeed));
             }
             if (Keyboard.GetState().IsKeyDown(Key.S))
             {
                 cam.camPos *= Matrix4.CreateTranslation(new Vector3(0, 0, -1 * moveSpeed));
-                cam.camTrans *= Matrix4.CreateTranslation(new Vector3(0, 0, -1 * moveSpeed));
             }
             if (Keyboard.GetState().IsKeyDown(Key.Space))
             {
                 cam.camPos *= Matrix4.CreateTranslation(new Vector3(0, -1 * moveSpeed, 0));
-                cam.camTrans *= Matrix4.CreateTranslation(new Vector3(0, -1 * moveSpeed, 0));
             }
             if (Keyboard.GetState().IsKeyDown(Key.ShiftLeft))
             {
                 cam.camPos *= Matrix4.CreateTranslation(new Vector3(0, moveSpeed, 0));
-                cam.camTrans *= Matrix4.CreateTranslation(new Vector3(0, moveSpeed, 0));
             }
 
             //Console.WriteLine((Matrix4.Invert(cam.totalRotation) * cam.camPos).Column1.W);
@@ -161,7 +155,7 @@ namespace Template_P3
             Matrix4 transform = Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), 0.01f);
             Matrix4 toWorld = transform;
 
-            graph.master.children[1].Rotate(Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), 0.01f));            
+            //graph.master.children[1].Rotate(Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), 0.01f));            
             //graph.master.children[2].rotate = graph.master.children[2].rotate * transform;
 
             if (useRenderTarget)
@@ -183,10 +177,9 @@ namespace Template_P3
             else
             {
                 // render scene directly to the screen\
-                
-                Matrix4 myMatrix = new Matrix4(new Vector4(1, 0, 0, cam.camPos.Column0.W), new Vector4(0, 1, 0, cam.camPos.Column1.W), new Vector4(0, 0, 1, cam.camPos.Column2.W), new Vector4(0, 0, 0, 1));
-                Matrix4 newPos = myMatrix * cam.camPos;
-                Vector3 camPos = new Vector3(newPos.Column0.W, newPos.Column1.W, newPos.Column2.W);
+
+                Matrix4 inverse = Matrix4.Invert(cam.camPos);
+                Vector3 camPos = new Vector3(inverse.Column0.W, inverse.Column1.W, inverse.Column2.W);
 
 
                 mesh.Render(shader, transform, wood, toWorld, camPos);

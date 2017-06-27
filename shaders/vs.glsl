@@ -21,5 +21,5 @@ void main()
 	// forward normal and uv coordinate; will be interpolated over triangle
 	normal = transform * vec4( vNormal, 0.0f );
 	uv = vUV;
-	intersectionPoint = toWorld * vec4(vPosition, 1.0);
+	intersectionPoint = transform * vec4(vPosition, 1.0);
 }
