@@ -62,11 +62,11 @@ namespace Template_P3
             //transformEend *= Matrix4.CreateTranslation(0, 0, -9);
 
             // load teapot
-            mesh = new Mesh("../../assets/teapot.obj", wood, transform, "mesh", false);
-            floor = new Mesh("../../assets/floor.obj", wood, transform, "floor", false);
-            eendM = new Mesh("../../assets/4Voet.obj", eend, transformEend, "eend", false);
-            skyBoxM = new Mesh("../../assets/SBB.obj", skyBox, skyBoxTrans, "skybox", true);
-            Sphere = new Mesh("../../assets/Mad sphere.obj", wood, transformS, "sphere", false);
+            mesh = new Mesh("../../assets/teapot.obj", wood, transform, "mesh");
+            floor = new Mesh("../../assets/floor.obj", wood, transform, "floor");
+            eendM = new Mesh("../../assets/4Voet.obj", eend, transformEend, "eend");
+            skyBoxM = new Mesh("../../assets/SBB.obj", skyBox, skyBoxTrans, "skybox");
+            Sphere = new Mesh("../../assets/Mad sphere.obj", wood, transformS, "sphere");
 
             //fill the scenegraph
             //graph.master = new Node(floor);
@@ -111,31 +111,36 @@ namespace Template_P3
             if (Keyboard.GetState().IsKeyDown(Key.A))
             {
                 cam.camPos *= Matrix4.CreateTranslation(new Vector3(moveSpeed, 0, 0));
+                cam.camTrans *=Matrix4.CreateTranslation(new Vector3(moveSpeed, 0, 0));
             }
             if (Keyboard.GetState().IsKeyDown(Key.D))
             {
                 cam.camPos *= Matrix4.CreateTranslation(new Vector3(-1 * moveSpeed, 0, 0));
+                cam.camTrans *= Matrix4.CreateTranslation(new Vector3(-1 * moveSpeed, 0, 0));
             }
             if (Keyboard.GetState().IsKeyDown(Key.W))
             {
                 cam.camPos *= Matrix4.CreateTranslation(new Vector3(0, 0, moveSpeed));
+                cam.camTrans *= Matrix4.CreateTranslation(new Vector3(0, 0, moveSpeed));
             }
             if (Keyboard.GetState().IsKeyDown(Key.S))
             {
                 cam.camPos *= Matrix4.CreateTranslation(new Vector3(0, 0, -1 * moveSpeed));
+                cam.camTrans *= Matrix4.CreateTranslation(new Vector3(0, 0, -1 * moveSpeed));
             }
             if (Keyboard.GetState().IsKeyDown(Key.Space))
             {
                 cam.camPos *= Matrix4.CreateTranslation(new Vector3(0, -1 * moveSpeed, 0));
+                cam.camTrans *= Matrix4.CreateTranslation(new Vector3(0, -1 * moveSpeed, 0));
             }
             if (Keyboard.GetState().IsKeyDown(Key.ShiftLeft))
             {
                 cam.camPos *= Matrix4.CreateTranslation(new Vector3(0, moveSpeed, 0));
+                cam.camTrans *= Matrix4.CreateTranslation(new Vector3(0, moveSpeed, 0));
             }
 
-            //Console.WriteLine((Matrix4.Invert(cam.totalRotation) * cam.camPos).Column1.W);
-            
-            //Console.WriteLine(cam.camPos.Column0);
+
+
             if (newMouseX != oldMouseX)//Y rotation
                 cam.camPos *= Matrix4.CreateRotationY(camSpeed * (newMouseX - oldMouseX) * 0.01f);
             if (newMouseY != oldMouseY)//X rotation
@@ -155,7 +160,8 @@ namespace Template_P3
             Matrix4 transform = Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), 0.01f);
             Matrix4 toWorld = transform;
 
-            //graph.master.children[1].Rotate(Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), 0.01f));            
+            graph.master.children[1].Rotate(Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), 0.01f));
+            graph.master.children[1].children[0].Rotate(Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), 0.1f));
             //graph.master.children[2].rotate = graph.master.children[2].rotate * transform;
 
             if (useRenderTarget)
@@ -176,12 +182,8 @@ namespace Template_P3
             }
             else
             {
-                // render scene directly to the screen\
-
-                Matrix4 inverse = Matrix4.Invert(cam.camPos);
-                Vector3 camPos = new Vector3(inverse.Column0.W, inverse.Column1.W, inverse.Column2.W);
-
-
+                // render scene directly to the screen
+                Vector3 camPos = new Vector3(cam.camTrans.Column0.W, cam.camTrans.Column1.W, cam.camTrans.Column2.W);
                 mesh.Render(shader, transform, wood, toWorld, camPos);
                 floor.Render(shader, transform, wood, toWorld, camPos);
             }

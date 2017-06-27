@@ -61,6 +61,7 @@ namespace Template_P3
             // on first run, prepare buffers
             Prepare(shader);
 
+
             // enable texture
             int texLoc = GL.GetUniformLocation(shader.programID, "pixels");
             GL.Uniform1(texLoc, 0);
@@ -80,7 +81,7 @@ namespace Template_P3
             GL.Uniform3(GL.GetUniformLocation(shader.programID, "cameraPos"), cameraPos);
 
             // passsing ambience variable to shader:
-            float f = 0.1f;
+            float f = 0.05f;
             Vector4 ambience = new Vector4(f, f, f, f);
             GL.Uniform4(GL.GetUniformLocation(shader.programID, "ambientColor"), ambience);
 

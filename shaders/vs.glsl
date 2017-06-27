@@ -16,10 +16,10 @@ uniform mat4 toWorld;
 void main()
 {
 	// transform vertex using supplied matrix
-	gl_Position = transform * toWorld *  vec4(vPosition, 1.0);
+	gl_Position = transform * toWorld * vec4(vPosition, 1.0);
 
 	// forward normal and uv coordinate; will be interpolated over triangle
-	normal = toWorld * vec4( vNormal, 0.0f );
+	normal = transform * vec4( vNormal, 0.0f );
 	uv = vUV;
-	intersectionPoint = toWorld * vec4(vPosition, 1.0);
+	intersectionPoint = transform * vec4(vPosition, 1.0);
 }
