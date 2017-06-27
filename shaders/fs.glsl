@@ -7,6 +7,7 @@ in vec4 intersectionPoint;		// the world location of the pixel you are drawing
 uniform sampler2D pixels;		// texture sampler
 uniform vec4 ambientColor;		// color that's added to every value of light
 uniform vec3 cameraPos;			// position of the camera at the time of drawing this.
+uniform int useShader;
 
 //uniform int lightAmount;
 //uniform vec3 lightPos[lightAmount];
@@ -23,6 +24,7 @@ out vec4 outputColor;
 // fragment shader
 void main()
 {
+	
 
 	vec3 L = lightpos1 - intersectionPoint.xyz;
 	vec3 C = normalize(intersectionPoint.xyz - cameraPos); // supposed to be a normalized version of the vector from the camera to the intersection point, reflected in the normal of the surface of the reflection point
@@ -41,6 +43,10 @@ void main()
 	vec4 cAmbient = vec4(ambientColor.x * texture( pixels, uv ).x, ambientColor.y * texture( pixels, uv).y, ambientColor.z * texture( pixels, uv ).z, 0);
 
 	vec4 color = ambientColor + cDiff + cSpecular;
+	
+	if(useShader > 0){
+	color = texture(pixels, uv);
+	}
 
     outputColor = color;
 }

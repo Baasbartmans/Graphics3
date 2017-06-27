@@ -19,7 +19,7 @@ namespace Template_P3
         int vertexBufferId;                     // vertex buffer
         int triangleBufferId;                   // triangle buffer
         int quadBufferId;						// quad buffer
-        bool sBox;
+        public bool sBox;
         string name;
 
         // constructor
@@ -56,7 +56,7 @@ namespace Template_P3
         }
 
         // render the mesh using the supplied shader and matrix
-        public void Render(Shader shader, Matrix4 transform, Texture texture, Matrix4 toWorld, Vector3 cameraPos)
+        public void Render(Shader shader, Matrix4 transform, Texture texture, Matrix4 toWorld, Vector3 cameraPos, bool useShader)
         {
             // on first run, prepare buffers
             Prepare(shader);
@@ -79,6 +79,12 @@ namespace Template_P3
 
             //pass camera location for specular lighting to shader:
             GL.Uniform3(GL.GetUniformLocation(shader.programID, "cameraPos"), cameraPos);
+
+            //For some objects we don't want to use the phong shading model
+            if (useShader)
+                GL.Uniform1(GL.GetUniformLocation(shader.programID, "useShader"), 100);
+            else
+                GL.Uniform1(GL.GetUniformLocation(shader.programID, "useShader"), -100);
 
             // passsing ambience variable to shader:
             float f = 0.05f;

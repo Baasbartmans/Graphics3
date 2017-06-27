@@ -182,8 +182,8 @@ namespace Template_P3
                 Vector3 camPos = new Vector3(inverse.Column0.W, inverse.Column1.W, inverse.Column2.W);
 
 
-                mesh.Render(shader, transform, wood, toWorld, camPos);
-                floor.Render(shader, transform, wood, toWorld, camPos);
+                mesh.Render(shader, transform, wood, toWorld, camPos,true);
+                floor.Render(shader, transform, wood, toWorld, camPos,true);
             }
         }
     }
