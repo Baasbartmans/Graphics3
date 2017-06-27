@@ -29,9 +29,13 @@ void main()
 	vec2 colGrad = vec2( ( (colLook.b * 256) + colLook.g) * div, colLook.r );
 	
 	//color grading
-	outputColor.r = texture( colCub, colGrad).r * vignet.r;
-	outputColor.g = texture( colCub, colGrad).g * vignet.g;
-	outputColor.b = texture( colCub, colGrad).b * vignet.b;
+	//outputColor.r = texture( colCub, colGrad).r * vignet.r;
+	//outputColor.g = texture( colCub, colGrad).g * vignet.g;
+	//outputColor.b = texture( colCub, colGrad).b * vignet.b;
+
+	outputColor.r = texture( pixels, uv).r * vignet.r;
+	outputColor.g = texture( pixels, uv).g * vignet.g;
+	outputColor.b = texture( pixels, uv).b * vignet.b;
 
 	//output without color grading
 	//outputColor.r = texture( pixels, vec2(uv.x + (dx * caI), uv.y  + (dy * caI)) ).r * vignet.r;
